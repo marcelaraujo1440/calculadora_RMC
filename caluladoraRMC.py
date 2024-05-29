@@ -21,7 +21,7 @@ def menu_principal():
 def menu_conjuntos():
     while True:
         print("Menu Conjuntos")
-        print("1 - ...\n2-União\n3-Diferença\n4-Interseçao \n5-Voltar")
+        print("1-Subconjunto proprio\n2-União\n3-Diferença\n4-Interseçao \n5-Voltar")
         op = int(input("Digite sua opção:\n"))
         if op == 5:
             break
@@ -30,21 +30,36 @@ def menu_conjuntos():
             continue
         else:
             if op == 1:
-                print("Chamar a função que faz a opção 1")
+                print(subconjunto_proprio())
             elif op == 2:
                 print(conjunto_uniao())
             elif op == 3:
                 print(diferença())
             elif op == 4:
                 print(interseçao())
-
-def conjunto_uniao():
-    A = []
-    B = []
+def subconjunto_proprio():
+    A=[]
+    B=[]
     for i in range(5):
         a = int(input("Digite um número para o conjunto A: \n"))
         A.append(a)
     for i in range(5):
+        b = int(input("Digite um número para o conjunto B: \n"))  
+        B.append(b)
+    if B in A and B != A:
+        return "Subconjunto proprio"
+    else:
+        return "Nao é subconjunto proprio"
+        
+def conjunto_uniao():
+    A = []
+    B = []
+    elementosA=int(input("Qual a quantidade de elementos que você deseja no conjunto A: "))
+    elementosB=int(input("Qual a quantidade de elementos que você deseja no conjunto B: "))
+    for i in range(elementosA):
+        a = int(input("Digite um número para o conjunto A: \n"))
+        A.append(a)
+    for i in range(elementosB):
         b = int(input("Digite um número para o conjunto B: \n"))  
         B.append(b)
     operacao = set(A) | set(B) 
