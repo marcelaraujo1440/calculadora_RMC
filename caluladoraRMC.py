@@ -40,26 +40,35 @@ def menu_conjuntos():
 def subconjunto_proprio():
     A=[]
     B=[]
-    for i in range(5):
+    
+    elementosA=int(input("Qual a quantidade de elementos que você deseja no conjunto A: "))
+    elementosB=int(input("Qual a quantidade de elementos que você deseja no conjunto B: "))
+    
+    for i in range(elementosA):
         a = int(input("Digite um número para o conjunto A: \n"))
         A.append(a)
-    for i in range(5):
+    
+    for i in range(elementosB):
         b = int(input("Digite um número para o conjunto B: \n"))  
         B.append(b)
-    if B in A and B != A:
-        return "Subconjunto proprio"
+        #analisa se O conjunto A esta todo em B e se o conjunto B é diferente de A
+        verficacao = all(elem in B for elem in A) and set(A) != set(B)
+    
+    if verficacao:
+        return "\nA é subconjunto próprio de B\n"
     else:
-        return "Nao é subconjunto proprio"
+        return "\nA não é subconjunto próprio de B\n"
+        
+    
         
 def conjunto_uniao():
     A = []
     B = []
-    elementosA=int(input("Qual a quantidade de elementos que você deseja no conjunto A: "))
-    elementosB=int(input("Qual a quantidade de elementos que você deseja no conjunto B: "))
-    for i in range(elementosA):
+    
+    for i in range(5):
         a = int(input("Digite um número para o conjunto A: \n"))
         A.append(a)
-    for i in range(elementosB):
+    for i in range(5):
         b = int(input("Digite um número para o conjunto B: \n"))  
         B.append(b)
     operacao = set(A) | set(B) 
