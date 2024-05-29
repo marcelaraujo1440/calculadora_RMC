@@ -1,5 +1,6 @@
 import sys
-
+import numpy
+import math
 def menu_principal():
     while True:
         print("1 - Conjuntos\n2 - Funções\n3 - Matrizes\n4 - Sair")
@@ -102,7 +103,7 @@ def  interseçao():
 def menu_funcoes():
     while True:
         print("Menu Funções")
-        print("1 - Função de 1º grau\n2 - ...\n3 - ...\n4 - Voltar")
+        print("1 - Função de 2º grau\n2 - ...\n3 - ...\n4 - Voltar")
         op = int(input("Digite sua opção:\n"))
         if op == 4:
             break
@@ -111,7 +112,7 @@ def menu_funcoes():
             continue
         else:
             if op == 1:
-                func_1()
+                print(func_1())
             elif op == 2:
                 print("Chamar a função que faz a opção 2")
             elif op == 3:
@@ -138,8 +139,22 @@ def menu_matrizes():
 def func_1():
     a = int(input("Digite o valor de a: "))
     b = int(input("Digite o valor de b: "))
-    x = int(input("Digite o valor de x: "))
-    y = a * x + b
-    print(f"O resultado da função de 1º grau é: {y}")
-
+    c= int(input("Digite o valor de c: "))
+    
+    
+    if a <= 0:
+        return "O 'a' não pode ser zero! "
+    delta= b**2 - 4*a*c
+    if delta < 0:
+        parte_real = -b / (2*a)
+        parte_imaginaria = math.sqrt(-delta) / (2*a)
+        return f"As raízes são complexas: {parte_real:.2f} + {parte_imaginaria:.2f}i e {parte_real:.2f} - {parte_imaginaria:.2f}i\n"
+    
+    elif delta == 0:
+        raiz = -b / (2*a)
+    else: #sqrt = raiz quadrada
+        raiz1 = (-b + math.sqrt(delta)) / (2*a)
+        raiz2 = (-b - math.sqrt(delta)) / (2*a)
+        return f"As raízes são {raiz1:.2f} e {raiz2:.2f}\n"
+    
 menu_principal()
