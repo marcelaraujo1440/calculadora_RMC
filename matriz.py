@@ -42,7 +42,8 @@ def calcdet(matriz):
         submatrix = [linha[:j] + linha[j+1:] for linha in matriz[1:]] 
         det += (-1) ** j * matriz[0][j] * calcdet(submatrix)
 
-    return det
+
+    return det, "A matriz é quadrada!"
 
 #função para realizar multiplicações entre matrizes
 def multiMatriz(matrizA, matrizB):
@@ -56,8 +57,8 @@ def multiMatriz(matrizA, matrizB):
         for j in range(len(matrizB[0])): #colunas da matrizB
             for k in range(len(matrizB)): #soma dos produtos da i da matrizA e das j da matrizB
                 ordemResultado[i][j] += matrizA[i][k] * matrizB[k][j]    
-                
-    return ordemResultado #retorno da matriz resultado que antes estava preenchidas com os 0's agora preenchida com o calculo feito no 3° loop for     
+
+    return "essa multiplicação é possivel!", printmatriz(ordemResultado) #retorno da matriz resultado que antes estava preenchidas com os 0's agora preenchida com o calculo feito no 3° loop for     
 
 def transposta(matriz):
     linhas = len(matriz)
@@ -71,4 +72,3 @@ def transposta(matriz):
             matrizTransposta[j][i] = matriz[i][j]
 
     return matrizTransposta
-

@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from matriz import *
 def traco():
     print(50*"-")
 def menu_principal():
@@ -130,7 +131,7 @@ def menu_funcoes():
 def menu_matrizes():
     while True:
         print("Menu Matrizes")
-        print("1 - ...\n2 - ...\n3 - ...\n4 - Voltar")
+        print("1 - Calcular determinante\n2 - Multiplicação de matrizes\n3 - Matriz transposta\n4 - Voltar")
         op = int(input("Digite sua opção:\n"))
         if op == 4:
             break
@@ -139,11 +140,29 @@ def menu_matrizes():
             continue
         else:
             if op == 1:
-                print("Chamar a função que faz a opção 1")
+                i = int(input(f"Digite aqui o numero de linhas da sua matriz:\n"))
+                j = int(input(f"Digite aqui o numero de colunas da sua matriz:\n"))
+                matriz = retornodematriz(i,j)
+                printmatriz(matriz)
+                print(calcdet(matriz))
             elif op == 2:
-                print("Chamar a função que faz a opção 2")
+                a = int(input(f"Digite aqui o numero de linhas da matriz 1\n"))
+                b = int(input(f"Digite aqui o numero de colunas da matriz 1\n"))
+
+                c = int(input(f"Digite aqui o numero de linhas da matriz 2\n"))
+                d = int(input(f"Digite aqui o numero de colunas da matriz 2\n"))
+                matriz1 = retornodematriz(a,b)
+                printmatriz(matriz1)
+
+                matriz2 = retornodematriz(c,d)
+                printmatriz(matriz2)
+                print(multiMatriz(matriz1, matriz2))
             elif op == 3:
-                print("Chamar a função que faz a opção 3")
+                i = int(input(f"Digite aqui o numero de linhas da sua matriz:\n"))
+                j = int(input(f"Digite aqui o numero de colunas da sua matriz:\n"))
+                matriz = retornodematriz(i,j)
+                printmatriz(matriz)
+                printmatriz(transposta(matriz))
 
 
 def func_2():
