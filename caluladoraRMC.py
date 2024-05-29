@@ -42,10 +42,10 @@ def conjunto_uniao():
     A = []
     B = []
     for i in range(5):
-        a = int(input("Digite um número para o conjunto A: "))
+        a = int(input("Digite um número para o conjunto A: \n"))
         A.append(a)
     for i in range(5):
-        b = int(input("Digite um número para o conjunto B: "))  
+        b = int(input("Digite um número para o conjunto B: \n"))  
         B.append(b)
     operacao = set(A) | set(B) 
     return operacao
@@ -54,10 +54,10 @@ def  diferença():
     A = []
     B = []
     for i in range(5):
-        a = int(input("Digite um número para o conjunto A: "))
+        a = int(input("Digite um número para o conjunto A: \n"))
         A.append(a)
     for i in range(5):
-        b = int(input("Digite um número para o conjunto B: "))  
+        b = int(input("Digite um número para o conjunto B: \n"))  
         B.append(b)
     operacao = set(A) - set(B) 
     return operacao
@@ -67,10 +67,10 @@ def  interseçao():
     A = []
     B = []
     for i in range(5):
-        a = int(input("Digite um número para o conjunto A: "))
+        a = int(input("Digite um número para o conjunto A: \n"))
         A.append(a)
     for i in range(5):
-        b = int(input("Digite um número para o conjunto B: "))  
+        b = int(input("Digite um número para o conjunto B: \n"))  
         B.append(b)
     operacao = set(A) & set(B) 
     return operacao
