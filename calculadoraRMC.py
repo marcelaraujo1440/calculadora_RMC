@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matriz import *
 from conjuntos import *
 from funcao2grau import *
+from funcaoexp import *
 
 
 
@@ -31,7 +32,7 @@ def menu_principal():
 def menu_conjuntos():
     while True:
         print("Menu Conjuntos")
-        print("1 - Subconjunto proprio\n2 - União\n3 - Diferença\n4 - Interseçao \n5 - Voltar")
+        print("1 - Subconjunto proprio\n2 - União\n3 - Diferença\n4 - Intersecçao \n5 - Voltar")
         op = int(input("Digite sua opção:\n"))
         traco()
         if op == 5:
