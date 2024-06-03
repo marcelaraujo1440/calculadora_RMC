@@ -29,6 +29,7 @@ def exponencial (a, b, x):
     return f
 
 def grafico ():  #não esta pronto!!!!
+    
     x = exponencial()
     plt.figure(figsize=(8, 6))
     plt.plot(x, y, label=f'f(x) = {a} * {b}^x')

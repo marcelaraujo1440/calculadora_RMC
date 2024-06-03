@@ -31,6 +31,7 @@ def func_2():
         raiz2 = (-b - math.sqrt(delta)) / (2*a)
         traco()
         print(f"As raízes são {raiz1:.2f} e {raiz2:.2f}")
+        
         # gerar valores do eixo x e do eixo y do gráfico
         eixo_X = np.linspace(-10, 10, 400)
         eixo_Y = a * eixo_X**2 + b * eixo_X + c
@@ -65,7 +66,10 @@ def func_2():
     #para calcular em funcao do x
     traco()
     x = float(input("Digite um valor para x: "))
+    
     #pega os mesmos numeros ja escolhidos pelo usuario la no começo
     y = a * x**2 + b * x + c
+    
     traco()
+    
     return f"O valor de f({x}) é {y:.2f}"

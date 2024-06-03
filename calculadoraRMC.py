@@ -1,10 +1,10 @@
 import sys
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 from matriz import *
 from conjuntos import *
 from funcao2grau import *
+
 from funcaoexp import *
 
 
@@ -55,20 +55,19 @@ def menu_conjuntos():
 def menu_funcoes():
     while True:
         print("Menu Funções")
-        print("1 - Função de 2º grau\n2 - Funções exponenciais\n3 -\n4 - Voltar")
+        print("1 - Função de 2º grau\n2 - Funções exponenciais\n3 - Voltar")
         op = int(input("Digite sua opção:\n"))
-        if op == 4:
+        if op == 3:
             break
-        if op < 1 or op > 4:
+        if op < 1 or op > 3:
             print("Opção inválida...")
             continue
         else:
             if op == 1:
                 print(func_2())
             elif op == 2:
-                print("Chamar a função que faz a opção 2")
-            elif op == 3:
-                print("Chamar a função que faz a opção 3")
+                print(pedir_valores())
+         
 
 def menu_matrizes():
     while True:
