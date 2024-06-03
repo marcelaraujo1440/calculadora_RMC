@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from matriz import *
 from conjuntos import *
 from funcao2grau import *
-
 from funcaoexp import *
 
 
@@ -66,7 +65,7 @@ def menu_funcoes():
             if op == 1:
                 print(func_2())
             elif op == 2:
-                print(func_exp)
+                print(func_exp())
          
 
 def menu_matrizes():
