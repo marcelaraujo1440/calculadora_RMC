@@ -1,18 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def pedir_valores():
-    while True:
-        a = int(input(f"Digite um valor para a:\n"))
-        b = int(input(f"Digite um valor para b:\n"))
-        if a == 0:
-            print("O valor de a não pode ser 0, digite novamente.")
-            continue
-        elif b >= 0 or b == 1:
-            print("O valor de a não pode ser 0, nem igual a 1. Digite novamente.")
-            continue
-        else:
-            return a, b
+def verificaraeb(a,b):
+    if a == 0:
+        return "O valor de a não pode ser 0, digite novamente."
+    if b >= 0 or b == 1:
+        return "O valor de a não pode ser 0, nem igual a 1. Digite novamente."
 
 def cresc_dec(b):
     if b > 1:
@@ -42,4 +35,34 @@ def grafico ():  #não esta pronto!!!!
     plt.grid(True)
     plt.show()
      
+
+def menuFuncaoExpondencial():
+    print("1 - Crescente ou Decrescente")
+    print("2 - Calcular em Função de x")
+    print("3 - Gráfico")
+    print("4 - Voltar\n")
+    escolha = int(input("Escolha uma opção: "))
+    return escolha
+
+def func_exp():
+    a = int(input("Digite o valor de a:\n"))  
+    b = int(input("Digite o valor de b:\n")) 
+    verificaraeb(a,b)
+    while True:
+        escolha = menuFuncaoExpondencial()
+        if escolha == 4:
+            break
+        if escolha > 4 or escolha < 1:
+            print("Opção invalida...")
+            continue
+        if escolha == 1:
+            cresc_dec(b)
+            continue
+        if escolha == 2:
+            x = pedirx()
+            print(exponencial(a,b,x))
+            continue
+        if escolha == 3:
+            print("grafico ainda esta sendo feito")
+            continue
 

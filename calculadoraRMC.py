@@ -66,7 +66,7 @@ def menu_funcoes():
             if op == 1:
                 print(func_2())
             elif op == 2:
-                print(pedir_valores())
+                print(func_exp)
          
 
 def menu_matrizes():
