@@ -105,5 +105,8 @@ def menu_matrizes():
                 printmatriz(transposta(matriz))
 
 
+
+
  
 menu_principal()
+
