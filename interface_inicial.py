@@ -45,7 +45,7 @@ def janela_Cadastro():
         ], justification='center')],
         [sg.Button('Enviar', size=(15, 1),pad=(10,20)), sg.Button('Voltar', size=(15, 1), pad=(10, 20))]
     ]
-    return sg.Window('Cadastro de Usuário', layout, size=(500, 450))
+    return sg.Window('Cadastro de Usuário', layout, size=(500, 450), finalize=True)
 
 def janela_op():
     layout=[
@@ -96,9 +96,9 @@ while True:
     
     if evento == 'Cadastre-se' and window == window2:
         window2.hide()
-        if window is not None:  # Feche a janela secundária se estiver aberta
-            
-            window3 = janela_Cadastro()
+        if window3 is not None:  # Feche a janela secundária se estiver aberta
+            window3.close()
+        window3 = janela_Cadastro()
 
     elif evento == 'Conjuntos' and window == window5:
         sg.popup('Conjuntos clicado')
