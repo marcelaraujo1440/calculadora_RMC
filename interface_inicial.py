@@ -28,7 +28,7 @@ def criar_janela_secundaria():
 def janela_Cadastro():
     layout = [
         [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Any', 15), pad=(0, 20))],
-        [sg.Text('cadastro', justification='center', size=(50, 1), font=('Any', 12), pad=(40, 20))],
+        [sg.Text('cadastro', justification='center', size=(50, 1), font=('Any', 15), pad=(40, 20))],
         [sg.Column([
             [sg.Frame(layout=[
                 [sg.Text('Nome de usuário')],
@@ -45,7 +45,25 @@ def janela_Cadastro():
         ], justification='center')],
         [sg.Button('Enviar', size=(15, 1),pad=(10,20)), sg.Button('Voltar', size=(15, 1), pad=(10, 20))]
     ]
-    return sg.Window('Cadastro de Usuário', layout, size=(500, 450), finalize=True)
+    return sg.Window('Cadastro de Usuário', layout, size=(500, 450),element_justification='center', finalize=True)
+
+def janela_entrar():
+    layout = [
+        [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Any', 15), pad=(0, 20))],
+        [sg.Text('Entrar', justification='center', size=(50, 1), font=('Any', 15), pad=(40, 20))],
+        [sg.Column([
+            [sg.Frame(layout=[
+                [sg.Text('Nome de usuário')],
+                [sg.InputText(key='-USUARIO-', size=(30, 1), enable_events=True)]
+            ], title='', pad=(0, 10))],
+            [sg.Frame(layout=[
+                [sg.Text('Senha')],
+                [sg.InputText(key='-SENHA-', size=(30, 1), password_char='*', enable_events=True)]
+            ], title='', pad=(0, 10))],
+        ], justification='center')],
+        [sg.Button('Enviar', size=(15, 1),pad=(10,20)), sg.Button('Voltar', size=(15, 1), pad=(10, 20))]
+    ]
+    return sg.Window('Entrar', layout, size=(500, 450),element_justification='center', finalize=True)
 
 def janela_op():
     layout=[
@@ -86,13 +104,26 @@ while True:
             window2.close()
         window2 = criar_janela_secundaria()
     
-    if evento == 'Voltar' and window == window2:
+    if evento == 'Voltar' and window == window2: #esse é da 1
         window2.close()
         window2 = None
         window1.un_hide()
     
+    if evento == 'Voltar' and window == window3:
+        window3.close()
+        window3 = None
+        window2.un_hide()
+    
+    if evento == 'Voltar' and window == window4:
+        window4.close()
+        window4 = None
+        window2.un_hide()
+    
     if evento == 'Entrar' and window == window2:
-        sg.popup('Entrar clicado')
+        window2.hide()
+        if window4 is not None:  # Feche a janela secundária se estiver aberta
+            window4.close()
+        window4 = janela_entrar()
     
     if evento == 'Cadastre-se' and window == window2:
         window2.hide()
@@ -127,7 +158,7 @@ while True:
         print(f'Nome de usuário: {usuario}')
         print(f'Senha: {senha}')
         print(f'Email: {email}')
-
+    
         
 window1.close()
 if window2:
