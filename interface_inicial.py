@@ -1,34 +1,33 @@
 import PySimpleGUI as sg
 
-# Configurações de tema e fonte
+# Configurações de tema e fonte 
 sg.theme('DarkBlue3')
 
 def criar_janela_inicial():
     layout = [
-        [sg.Text('Olá, seja bem vindo(a) à', justification='center', font=('Any', 20), pad=(0, 20))],
-        [sg.Text('"calculadora sinistra"', justification='center', font=('Any', 30, 'bold'), pad=(0, 20))],
-        [sg.Button('INICIAR', size=(15, 1), font=('Any', 15, 'bold'), pad=(0, 20))],
+        [sg.Text('Olá, seja bem vindo(a) à', justification='center', font=("Bookman Old Style", 20), pad=(0, 20))],
+        [sg.Text('"calculadora sinistra"', justification='center', font=('Cooper Black', 24), pad=(0, 20))],
+        [sg.Button('INICIAR', size=(15, 1), font=("Courier", 15, 'bold'), pad=(0, 20))],
         [sg.Text('Desenvolvido por Gabriel Carmo e Marcel Araujo, todos os direitos reservados ©', 
-                 justification='center', font=('Any', 10), pad=(0, 60))]
+                 justification='center', font=("Courier, 10"), pad=(0, 60))]
     ]
     return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
 
 def criar_janela_secundaria():
     layout = [
-        [sg.Text('CALCULADORA SINISTRA', justification='center', font=('Any', 20), pad=(0, 20))],
-        [sg.Text('Escolha uma opção:', justification='center', font=('Any', 15), pad=(0, 20))],
-        [sg.Button('Entrar', size=(15, 1), font=('Any', 15, 'bold')), 
-         sg.Button('Cadastre-se', size=(15, 1), font=('Any', 15, 'bold'), pad=(20, 0))],
-        [sg.Button('Voltar', size=(15, 1), font=('Any', 15, 'bold'), pad=(0, 20))],
-        [sg.Text('Desenvolvido por Gabriel Carmo e Marcel Araujo, todos os direitos reservados ©', 
-                 justification='center', font=('Any', 10), pad=(0, 60))]
+        [sg.Text('CALCULADORA SINISTRA', justification='center', font=('Cooper Black', 24), pad=(0, 20))],
+        [sg.Text('Escolha uma opção:', justification='center', font=("Bookman Old Style", 20), pad=(0, 20))],
+        [sg.Button('Entrar', size=(15, 1), font=("Courier", 15, 'bold')), 
+         sg.Button('Cadastre-se', size=(15, 1), font=("Courier", 15, 'bold'), pad=(20, 0))],
+        [sg.Button('Voltar', size=(15, 1), font=("Courier", 15, 'bold'), pad=(0, 20))],
+        
     ]
     return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
 
 def janela_Cadastro():
     layout = [
-        [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Any', 15), pad=(0, 20))],
-        [sg.Text('cadastro', justification='center', size=(50, 1), font=('Any', 15), pad=(40, 20))],
+        [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Cooper Black', 20), pad=(0, 20))],
+        [sg.Text('cadastro', justification='center', size=(50, 1), font=("Bookman Old Style", 18), pad=(40, 20))],
         [sg.Column([
             [sg.Frame(layout=[
                 [sg.Text('Nome de usuário')],
@@ -49,8 +48,8 @@ def janela_Cadastro():
 
 def janela_entrar():
     layout = [
-        [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Any', 15), pad=(0, 20))],
-        [sg.Text('Entrar', justification='center', size=(50, 1), font=('Any', 15), pad=(40, 20))],
+        [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Cooper Black', 24), pad=(0, 20))],
+        [sg.Text('Entrar', justification='center', size=(50, 1), font=("Bookman Old Style", 20), pad=(20, 20))],
         [sg.Column([
             [sg.Frame(layout=[
                 [sg.Text('Nome de usuário')],
@@ -68,12 +67,12 @@ def janela_entrar():
 def janela_op():
     layout=[
 
-            [sg.Text("CALCULADORA SINISTRA", justification='center', font=('Any', 20), pad=(0, 20)),],
-            [sg.Text("Escolha a sua operação!",justification='center', font=('Any', 15), pad=(0, 20))],
-            [sg.Button("Conjuntos", size=(15, 1), font=('Any', 15, 'bold')), sg.Button("Matrizes", size=(15, 1), font=('Any', 15, 'bold'))],
-            [sg.Button("Funções",size=(15, 1), font=('Any', 15, 'bold')), sg.Button("Raiz Quadrada",size=(15, 1), font=('Any', 15, 'bold'))],
-            [sg.Button("Fatorial",size=(15, 1), font=('Any', 15, 'bold')), sg.Button("Operações Básicas",size=(15, 1), font=('Any', 15, 'bold'))],
-            [sg.Button("Histórico",size=(15, 1), font=('Any', 15, 'bold'))],
+            [sg.Text("CALCULADORA SINISTRA", justification='center', font=("Courier", 20), pad=(0, 20)),],
+            [sg.Text("Escolha a sua operação!",justification='center', font=("Courier", 15), pad=(0, 20))],
+            [sg.Button("Conjuntos", size=(15, 1), font=("Courier", 15, 'bold')), sg.Button("Matrizes", size=(15, 1), font=("Courier", 15, 'bold'))],
+            [sg.Button("Funções",size=(15, 1), font=("Courier", 15, 'bold')), sg.Button("Raiz Quadrada",size=(15, 1), font=("Courier", 15, 'bold'))],
+            [sg.Button("Fatorial",size=(15, 1), font=("Courier", 15, 'bold')), sg.Button("Operações Básicas",size=(15, 1), font=("Courier", 15, 'bold'))],
+            [sg.Button("Histórico",size=(15, 1), font=("Courier", 15, 'bold'))],
             
         ]
     return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
@@ -162,4 +161,4 @@ while True:
         
 window1.close()
 if window2:
-   window2.close()
+  window2.close()
