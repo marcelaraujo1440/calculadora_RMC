@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 # Configurações de tema e fonte 
-sg.theme('DarkBlue3')
+sg.theme('DarkTeal2')
 
 def criar_janela_inicial():
     layout = [
@@ -77,12 +77,44 @@ def janela_op():
         ]
     return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
 
+def janela_calculadorabasica():
+
+    col_1 =[ #coluna 3
+       [sg.Button('1',size=(8,2),font="bold", pad=(5,15)),sg.Button('2',size=(8,2),font="bold",pad=(5,15)),sg.Button('3',size=(8,2),font="bold",pad=(5,15))],
+       [sg.Button('4',size=(8,2),font="bold", pad=(5,15)),sg.Button('5',size=(8,2),font="bold", pad=(5,15)),sg.Button('6',size=(8,2),font="bold", pad=(5,15))],
+       [sg.Button('7',size=(8,2),font="bold", pad=(5,15)),sg.Button('8',size=(8,2),font="bold", pad=(5,15)),sg.Button('9',size=(8,2),font="bold", pad=(5,15))],
+       [sg.Button('+/-',size=(8,2),font="bold",key="-OPOSTO-", pad=(5,15)),sg.Button('0',size=(8,2),font="bold", pad=(5,15)),sg.Button('.',size=(8,2),font="bold",key="-PONTO-", pad=(5,15))],
+       [sg.Button("Voltar",size=(32,2))]
+    ]
+    col_2 = [ #coluna 2
+        [sg.B('*',size=(8,4),key="-MULTI-",font="bold")],
+        [sg.B('-',size=(8,4),key="-MENOS-",font="bold")],
+        [sg.B('+',size=(8,9),key="-MAIS-",font="bold")],
+        ]
+    
+    col_3 = [ #coluna 3
+        [sg.Button('/',size=(8,2),key="-DIV-",font="bold")],
+        [sg.Button('-->',size=(8,2),key="-LIMPAR-",font="bold")],
+        [sg.Button('CE',size=(8,4),key="-LIMPARTD-",font="bold")],
+        [sg.Button('=',size=(8,8),key="-EQUAC-",font="bold")],
+        ]
+    
+       
+    
+    layout = [
+        [sg.I(size=(23,1),font=(None,30),key="-INPUT-",enable_events=True)],
+        [sg.Col(col_1), sg.VerticalSeparator(),sg.Col(col_2), sg.Col(col_3)], #sg.VerticalSeparator() para criar uma linha entre as duas colunas
+        ]
+    
+    return sg.Window('Calculadora Basica', layout, size=(500, 450), element_justification='center', finalize=True)
+
 # Criar a primeira janela
 window1 = criar_janela_inicial() #janela inicial
 window2 = None  # entrar ou cadastre-se
 window3 = None #cadastre-se
 window4 = None # entrar
-window5 = None #operações
+window5 = None #menu de operações
+window11 = None#operacoes basicas
 
 # Loop de eventos
 while True:
@@ -117,6 +149,10 @@ while True:
         window4.close()
         window4 = None
         window2.un_hide()
+    if evento == 'Voltar' and window == window11:
+        window5.close()
+        window11 = None
+        window5.un_hide()
     
     if evento == 'Entrar' and window == window2:
         window2.hide()
@@ -144,6 +180,7 @@ while True:
     
     elif evento == 'Fatorial' and window == window5:
         sg.popup('Fatorial clicado')
+    
     elif evento == 'Operações Básicas' and window == window5:
         sg.popup('Operações Básicas clicado')
     
