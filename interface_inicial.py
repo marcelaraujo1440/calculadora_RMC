@@ -1,7 +1,31 @@
 import PySimpleGUI as sg
+import numpy as np
 
 # Configurações de tema e fonte 
 sg.theme('DarkTeal2')
+
+def create_matrix_layout(rows, cols, matrix_num):
+    layout = []
+    for i in range(rows):
+        row = []
+        for j in range(cols):
+            row.append(sg.Input(size=(5, 1), key=f'M{matrix_num}_r{i}c{j}'))
+        layout.append(row)
+    return layout
+
+def get_matrix_values(window, rows, cols, matrix_num):
+    matrix = []
+    for i in range(rows):
+        row = []
+        for j in range(cols):
+            value = window[f'M{matrix_num}_r{i}c{j}'].get()
+            if value.replace('.', '', 1).isdigit() or (value.startswith('-') and value[1:].replace('.', '', 1).isdigit()):
+                row.append(float(value))
+            else:
+                sg.popup_error(f"Valor inválido na matriz {matrix_num}, posição ({i},{j}).")
+                return None
+        matrix.append(row)
+    return np.array(matrix)
 
 def criar_janela_inicial():
     layout = [
@@ -18,33 +42,13 @@ def criar_janela_secundaria():
         [sg.Text('CALCULADORA SINISTRA', justification='center', font=('Cooper Black', 24), pad=(0, 20))],
         [sg.Text('Escolha uma opção:', justification='center', font=("Bookman Old Style", 20), pad=(0, 20))],
         [sg.Button('Entrar', size=(15, 1), font=("Courier", 15, 'bold')), 
-         sg.Button('Cadastre-se', size=(15, 1), font=("Courier", 15, 'bold'), pad=(20, 0))],
+  ],
         [sg.Button('Voltar', size=(15, 1), font=("Courier", 15, 'bold'), pad=(0, 20))],
         
     ]
     return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
 
-def janela_Cadastro():
-    layout = [
-        [sg.Text('CALCULADORA SINISTRA', justification='center', size=(50, 1), font=('Cooper Black', 20), pad=(0, 20))],
-        [sg.Text('cadastro', justification='center', size=(50, 1), font=("Bookman Old Style", 18), pad=(40, 20))],
-        [sg.Column([
-            [sg.Frame(layout=[
-                [sg.Text('Nome de usuário')],
-                [sg.InputText(key='-USUARIO-', size=(30, 1), enable_events=True)]
-            ], title='', pad=(0, 10))],
-            [sg.Frame(layout=[
-                [sg.Text('Senha')],
-                [sg.InputText(key='-SENHA-', size=(30, 1), password_char='*', enable_events=True)]
-            ], title='', pad=(0, 10))],
-            [sg.Frame(layout=[
-                [sg.Text('Email')],
-                [sg.InputText(key='-EMAIL-', size=(30, 1), enable_events=True)]
-            ], title='', pad=(0, 10))]
-        ], justification='center')],
-        [sg.Button('Enviar', size=(15, 1),pad=(10,20)), sg.Button('Voltar', size=(15, 1), pad=(10, 20))]
-    ]
-    return sg.Window('Cadastro de Usuário', layout, size=(500, 450),element_justification='center', finalize=True)
+
 
 def janela_entrar():
     layout = [
@@ -55,10 +59,7 @@ def janela_entrar():
                 [sg.Text('Nome de usuário')],
                 [sg.InputText(key='-USUARIO-', size=(30, 1), enable_events=True)]
             ], title='', pad=(0, 10))],
-            [sg.Frame(layout=[
-                [sg.Text('Senha')],
-                [sg.InputText(key='-SENHA-', size=(30, 1), password_char='*', enable_events=True)]
-            ], title='', pad=(0, 10))],
+           [ ],
         ], justification='center')],
         [sg.Button('Enviar', size=(15, 1),pad=(10,20)), sg.Button('Voltar', size=(15, 1), pad=(10, 20))]
     ]
@@ -67,8 +68,8 @@ def janela_entrar():
 def janela_op():
     layout=[
 
-            [sg.Text("CALCULADORA SINISTRA", justification='center', font=("Courier", 20), pad=(0, 20)),],
-            [sg.Text("Escolha a sua operação!",justification='center', font=("Courier", 15), pad=(0, 20))],
+            [sg.Text("CALCULADORA SINISTRA", justification='center', font=("Bookman Old Style", 20), pad=(0, 20)),],
+            [sg.Text("Escolha a sua operação!",justification='center', font=( "Bookman Old Style",15), pad=(0, 20))],
             [sg.Button("Conjuntos", size=(15, 1), font=("Courier", 15, 'bold')), sg.Button("Matrizes", size=(15, 1), font=("Courier", 15, 'bold'))],
             [sg.Button("Funções",size=(15, 1), font=("Courier", 15, 'bold')), sg.Button("Raiz Quadrada",size=(15, 1), font=("Courier", 15, 'bold'))],
             [sg.Button("Fatorial",size=(15, 1), font=("Courier", 15, 'bold')), sg.Button("Operações Básicas",size=(15, 1), font=("Courier", 15, 'bold'))],
@@ -96,106 +97,182 @@ def janela_calculadorabasica():
         [sg.Button('/',size=(8,2),key="-DIV-",font="bold")],
         [sg.Button('-->',size=(8,2),key="-LIMPAR-",font="bold")],
         [sg.Button('CE',size=(8,4),key="-LIMPARTD-",font="bold")],
-        [sg.Button('=',size=(8,8),key="-EQUAC-",font="bold")],
+        [sg.Button('=',size=(8,8),key="-RESULTADO-",font="bold")],
         ]
-    
-       
-    
+
     layout = [
-        [sg.I(size=(23,1),font=(None,30),key="-INPUT-",enable_events=True)],
-        [sg.Col(col_1), sg.VerticalSeparator(),sg.Col(col_2), sg.Col(col_3)], #sg.VerticalSeparator() para criar uma linha entre as duas colunas
-        ]
-    
-    return sg.Window('Calculadora Basica', layout, size=(500, 450), element_justification='center', finalize=True)
+        [sg.Input(key='-VALOR-',size=(31,3),justification='right',font="bold")],
+        [sg.Column(col_1), sg.Column(col_2), sg.Column(col_3)]
+    ]
 
-# Criar a primeira janela
-window1 = criar_janela_inicial() #janela inicial
-window2 = None  # entrar ou cadastre-se
-window3 = None #cadastre-se
-window4 = None # entrar
-window5 = None #menu de operações
-window11 = None#operacoes basicas
+    return sg.Window('Calculadora Básica', layout, finalize=True)
 
-# Loop de eventos
+def janela_matriz():
+    layout = [
+        [sg.Text("Calculadora de Matrizes",font=("Bookman Old Style", 20) , justification='center')],
+        [sg.Text("Número de linhas e colunas da Matriz A:", font=("Bookman Old Style", 15) )],
+        [sg.InputText(key='-ROWS_A-', size=(5, 1)), sg.InputText(key='-COLS_A-', size=(5, 1))],
+        [sg.Button("Criar Matriz A")],
+        [sg.Text("Número de linhas e colunas da Matriz B:", font=("Courier", 15))],
+        [sg.InputText(key='-ROWS_B-', size=(5, 1)), sg.InputText(key='-COLS_B-', size=(5, 1))],
+        [sg.Button("Criar Matriz B")],
+        [sg.Frame("Matriz A", [[sg.Column([[]], key='-MATRIZ_A-')]]), 
+         sg.Frame("Matriz B", [[sg.Column([[]], key='-MATRIZ_B-')]])],
+        [sg.Button("Somar Matrizes"), sg.Button("Multiplicar Matrizes")],
+        [sg.Button("Determinante Matriz A"), sg.Button("Determinante Matriz B")],
+        [sg.Button("Transposta Matriz A"), sg.Button("Transposta Matriz B")],
+        [sg.Text("Resultado:", font=("Courier", 15))],
+        [sg.Multiline(key='-RESULTADO-', size=(40, 10), disabled=True)],
+        [sg.Button("Voltar")]
+    ]
+    return sg.Window('Calculadora de Matrizes', layout, finalize=True)
+
+# Criar janelas iniciais
+janela1, janela2, janela3, janela4, janela5, janela6, janela7 = criar_janela_inicial(), None, None, None, None, None, None
+
+# Variáveis de controle
+matrix_a_created, matrix_b_created = False, False
+rows_a, cols_a, rows_b, cols_b = 0, 0, 0, 0
+
 while True:
-    window, evento, valores = sg.read_all_windows()
+    window, event, values = sg.read_all_windows()
     
-    if evento == sg.WINDOW_CLOSED:
-        window.close()
-        if window == window2:
-            window2 = None
-        if window == window3:
-            window3 = None
-        elif window == window1:
-            break
-    
-    if evento == 'INICIAR' and window == window1:
-        window.hide()
-        if window2 is not None:  # Feche a janela secundária se estiver aberta
-            window2.close()
-        window2 = criar_janela_secundaria()
-    
-    if evento == 'Voltar' and window == window2: #esse é da 1
-        window2.close()
-        window2 = None
-        window1.un_hide()
-    
-    if evento == 'Voltar' and window == window3:
-        window3.close()
-        window3 = None
-        window2.un_hide()
-    
-    if evento == 'Voltar' and window == window4:
-        window4.close()
-        window4 = None
-        window2.un_hide()
-    if evento == 'Voltar' and window == window11:
-        window5.close()
-        window11 = None
-        window5.un_hide()
-    
-    if evento == 'Entrar' and window == window2:
-        window2.hide()
-        if window4 is not None:  # Feche a janela secundária se estiver aberta
-            window4.close()
-        window4 = janela_entrar()
-    
-    if evento == 'Cadastre-se' and window == window2:
-        window2.hide()
-        if window3 is not None:  # Feche a janela secundária se estiver aberta
-            window3.close()
-        window3 = janela_Cadastro()
+    if window == janela1 and event == sg.WINDOW_CLOSED:
+        break
 
-    elif evento == 'Conjuntos' and window == window5:
-        sg.popup('Conjuntos clicado')
+    if window == janela2 and event == sg.WINDOW_CLOSED:
+        break
 
-    elif evento == 'Matrizes' and window == window5:
-        sg.popup('Matrizes clicado')
-    
-    elif evento == "Funções" and window == window5:
-        sg.popup('Funções clicado')
-    
-    elif evento == 'Raiz Quadrada' and window == window5:
-        sg.popup('Raiz Quadrada clicado') 
-    
-    elif evento == 'Fatorial' and window == window5:
-        sg.popup('Fatorial clicado')
-    
-    elif evento == 'Operações Básicas' and window == window5:
-        sg.popup('Operações Básicas clicado')
-    
-    elif evento == 'Histórico' and window == window5:
-        sg.popup('Histórico clicado')
+    if window == janela3 and event == sg.WINDOW_CLOSED:
+        break
 
-    if evento== 'Enviar' and window == window3:
-        usuario = valores['-USUARIO-']
-        senha = valores['-SENHA-']
-        email = valores['-EMAIL-']
-        print(f'Nome de usuário: {usuario}')
-        print(f'Senha: {senha}')
-        print(f'Email: {email}')
+    if window == janela4 and event == sg.WINDOW_CLOSED:
+        break
+
+    if window == janela5 and event == sg.WINDOW_CLOSED:
+        break
+
+    if window == janela6 and event == sg.WINDOW_CLOSED:
+        break
+
+    if window == janela7 and event == sg.WINDOW_CLOSED:
+        break
     
+    if window == janela1 and event == 'INICIAR':
+        janela1.hide()
+        janela2 = criar_janela_secundaria()
+    
+    if window == janela2 and event == 'Entrar':
+        janela2.hide()
+        janela4 = janela_entrar()
+
+    #if window == janela2 and event == 'Cadastre-se':
+      #  janela2.hide()
+       # janela3 = janela_Cadastro()
+
+    if window == janela2 and event == 'Voltar':
+        janela2.hide()
+        janela1.un_hide()
+
+    if window == janela3 and event == 'Voltar':
+        janela3.hide()
+        janela2.un_hide()
+    
+    if window == janela4 and event == 'Voltar':
+        janela4.hide()
+        janela2.un_hide()
+
+    if window == janela4 and event == 'Enviar':
+        # Aqui você pode implementar a lógica de verificação de login
+        janela4.hide()
+        janela5 = janela_op()
+
+    if window == janela3 and event == 'Enviar':
+        # Aqui você pode implementar a lógica de cadastro
+        sg.popup('Cadastro realizado com sucesso!')
+        janela3.hide()
+        janela2.un_hide()
+
+    if window == janela5 and event == 'Voltar':
+        janela5.hide()
+        janela4.un_hide()
+    
+    if window == janela5 and event == "Operações Básicas":
+        janela5.hide()
+        janela6 = janela_calculadorabasica()
         
-window1.close()
-if window2:
-  window2.close()
+    if window == janela6 and event == "Voltar":
+        janela6.hide()
+        janela5.un_hide()
+
+    if window == janela5 and event == "Matrizes":
+        janela5.hide()
+        janela7 = janela_matriz()
+    
+    if window == janela7 and event == "Voltar":
+        janela7.hide()
+        janela5.un_hide()
+
+    if window == janela7 and event == "Criar Matriz A":
+        rows_a, cols_a = int(values['-ROWS_A-']), int(values['-COLS_A-'])
+        window['-MATRIZ_A-'].update(visible=True)
+        window.extend_layout(window['-MATRIZ_A-'], create_matrix_layout(rows_a, cols_a, 1))
+        matrix_a_created = True
+
+    if window == janela7 and event == "Criar Matriz B":
+        rows_b, cols_b = int(values['-ROWS_B-']), int(values['-COLS_B-'])
+        window['-MATRIZ_B-'].update(visible=True)
+        window.extend_layout(window['-MATRIZ_B-'], create_matrix_layout(rows_b, cols_b, 2))
+        matrix_b_created = True
+
+    if window == janela7 and event == "Somar Matrizes" and matrix_a_created and matrix_b_created:
+        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
+        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
+        if matrix_a is not None and matrix_b is not None:
+            if matrix_a.shape == matrix_b.shape:
+                result = matrix_a + matrix_b
+                window['-RESULTADO-'].update(result)
+            else:
+                sg.popup_error("As matrizes devem ter o mesmo tamanho para serem somadas.")
+
+    if window == janela7 and event == "Multiplicar Matrizes" and matrix_a_created and matrix_b_created:
+        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
+        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
+        if matrix_a is not None and matrix_b is not None:
+            if cols_a == rows_b:
+                result = np.dot(matrix_a, matrix_b)
+                window['-RESULTADO-'].update(result)
+            else:
+                sg.popup_error("O número de colunas da Matriz A deve ser igual ao número de linhas da Matriz B.")
+
+    if window == janela7 and event == "Determinante Matriz A" and matrix_a_created:
+        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
+        if matrix_a is not None:
+            if rows_a == cols_a:
+                det_a = np.linalg.det(matrix_a)
+                window['-RESULTADO-'].update(f'Determinante da Matriz A: {det_a}')
+            else:
+                sg.popup_error("A Matriz A deve ser quadrada para calcular o determinante.")
+
+    if window == janela7 and event == "Determinante Matriz B" and matrix_b_created:
+        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
+        if matrix_b is not None:
+            if rows_b == cols_b:
+                det_b = np.linalg.det(matrix_b)
+                window['-RESULTADO-'].update(f'Determinante da Matriz B: {det_b}')
+            else:
+                sg.popup_error("A Matriz B deve ser quadrada para calcular o determinante.")
+
+    if window == janela7 and event == "Transposta Matriz A" and matrix_a_created:
+        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
+        if matrix_a is not None:
+            trans_a = np.transpose(matrix_a)
+            window['-RESULTADO-'].update(f'Transposta da Matriz A:\n{trans_a}')
+
+    if window == janela7 and event == "Transposta Matriz B" and matrix_b_created:
+        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
+        if matrix_b is not None:
+            trans_b = np.transpose(matrix_b)
+            window['-RESULTADO-'].update(f'Transposta da Matriz B:\n{trans_b}')
+
+window.close()
