@@ -4,7 +4,7 @@ import numpy as np
 # Configurações de tema e fonte 
 sg.theme('DarkTeal2')
 
-def create_matrix_layout(rows, cols, matrix_num):
+def criar_layout_matriz(rows, cols, matrix_num):
     layout = []
     for i in range(rows):
         row = []
@@ -13,7 +13,7 @@ def create_matrix_layout(rows, cols, matrix_num):
         layout.append(row)
     return layout
 
-def get_matrix_values(window, rows, cols, matrix_num):
+def pegar_valores_matriz(window, rows, cols, matrix_num):
     matrix = []
     for i in range(rows):
         row = []
@@ -57,7 +57,7 @@ def janela_entrar():
         [sg.Column([
             [sg.Frame(layout=[
                 [sg.Text('Nome de usuário')],
-                [sg.InputText(key='-USUARIO-', size=(30, 1), enable_events=True)]
+                [sg.InputText(key='-USUARIO-', size=(30, 1))]
             ], title='', pad=(0, 10))],
            [ ],
         ], justification='center')],
@@ -111,10 +111,10 @@ def janela_matriz():
     layout = [
         [sg.Text("Calculadora de Matrizes",font=("Bookman Old Style", 20) , justification='center')],
         [sg.Text("Número de linhas e colunas da Matriz A:", font=("Bookman Old Style", 15) )],
-        [sg.InputText(key='-ROWS_A-', size=(5, 1)), sg.InputText(key='-COLS_A-', size=(5, 1))],
+        [sg.InputText(key='-linhaA-', size=(5, 1)), sg.InputText(key='-colunasA-', size=(5, 1))],
         [sg.Button("Criar Matriz A")],
         [sg.Text("Número de linhas e colunas da Matriz B:", font=("Courier", 15))],
-        [sg.InputText(key='-ROWS_B-', size=(5, 1)), sg.InputText(key='-COLS_B-', size=(5, 1))],
+        [sg.InputText(key='-linhaB-', size=(5, 1)), sg.InputText(key='-colunasB-', size=(5, 1))],
         [sg.Button("Criar Matriz B")],
         [sg.Frame("Matriz A", [[sg.Column([[]], key='-MATRIZ_A-')]]), 
          sg.Frame("Matriz B", [[sg.Column([[]], key='-MATRIZ_B-')]])],
@@ -131,148 +131,148 @@ def janela_matriz():
 janela1, janela2, janela3, janela4, janela5, janela6, janela7 = criar_janela_inicial(), None, None, None, None, None, None
 
 # Variáveis de controle
-matrix_a_created, matrix_b_created = False, False
-rows_a, cols_a, rows_b, cols_b = 0, 0, 0, 0
+matriz_a_cria, matriz_b_cria = False, False
+linhaA, colunasA, linhaB, colunasB = 0, 0, 0, 0
 
 while True:
-    window, event, values = sg.read_all_windows()
+    window, evento, valores = sg.read_all_windows()
     
-    if window == janela1 and event == sg.WINDOW_CLOSED:
+    if window == janela1 and evento == sg.WINDOW_CLOSED:
         break
 
-    if window == janela2 and event == sg.WINDOW_CLOSED:
+    if window == janela2 and evento == sg.WINDOW_CLOSED:
         break
 
-    if window == janela3 and event == sg.WINDOW_CLOSED:
+    if window == janela3 and evento == sg.WINDOW_CLOSED:
         break
 
-    if window == janela4 and event == sg.WINDOW_CLOSED:
+    if window == janela4 and evento == sg.WINDOW_CLOSED:
         break
 
-    if window == janela5 and event == sg.WINDOW_CLOSED:
+    if window == janela5 and evento == sg.WINDOW_CLOSED:
         break
 
-    if window == janela6 and event == sg.WINDOW_CLOSED:
+    if window == janela6 and evento == sg.WINDOW_CLOSED:
         break
 
-    if window == janela7 and event == sg.WINDOW_CLOSED:
+    if window == janela7 and evento == sg.WINDOW_CLOSED:
         break
     
-    if window == janela1 and event == 'INICIAR':
+    if window == janela1 and evento == 'INICIAR':
         janela1.hide()
         janela2 = criar_janela_secundaria()
     
-    if window == janela2 and event == 'Entrar':
+    if window == janela2 and evento == 'Entrar':
         janela2.hide()
         janela4 = janela_entrar()
 
-    #if window == janela2 and event == 'Cadastre-se':
+    #if window == janela2 and evento == 'Cadastre-se':
       #  janela2.hide()
        # janela3 = janela_Cadastro()
 
-    if window == janela2 and event == 'Voltar':
+    if window == janela2 and evento == 'Voltar':
         janela2.hide()
         janela1.un_hide()
 
-    if window == janela3 and event == 'Voltar':
+    if window == janela3 and evento == 'Voltar':
         janela3.hide()
         janela2.un_hide()
     
-    if window == janela4 and event == 'Voltar':
+    if window == janela4 and evento == 'Voltar':
         janela4.hide()
         janela2.un_hide()
 
-    if window == janela4 and event == 'Enviar':
+    if window == janela4 and evento == 'Enviar':
         # Aqui você pode implementar a lógica de verificação de login
         janela4.hide()
         janela5 = janela_op()
 
-    if window == janela3 and event == 'Enviar':
+    if window == janela3 and evento == 'Enviar':
         # Aqui você pode implementar a lógica de cadastro
         sg.popup('Cadastro realizado com sucesso!')
         janela3.hide()
         janela2.un_hide()
 
-    if window == janela5 and event == 'Voltar':
+    if window == janela5 and evento == 'Voltar':
         janela5.hide()
         janela4.un_hide()
     
-    if window == janela5 and event == "Operações Básicas":
+    if window == janela5 and evento == "Operações Básicas":
         janela5.hide()
         janela6 = janela_calculadorabasica()
         
-    if window == janela6 and event == "Voltar":
+    if window == janela6 and evento == "Voltar":
         janela6.hide()
         janela5.un_hide()
 
-    if window == janela5 and event == "Matrizes":
+    if window == janela5 and evento == "Matrizes":
         janela5.hide()
         janela7 = janela_matriz()
     
-    if window == janela7 and event == "Voltar":
+    if window == janela7 and evento == "Voltar":
         janela7.hide()
         janela5.un_hide()
 
-    if window == janela7 and event == "Criar Matriz A":
-        rows_a, cols_a = int(values['-ROWS_A-']), int(values['-COLS_A-'])
+    if window == janela7 and evento == "Criar Matriz A":
+        linhaA, colunasA = int(valores['-linhaA-']), int(valores['-colunasA-'])
         window['-MATRIZ_A-'].update(visible=True)
-        window.extend_layout(window['-MATRIZ_A-'], create_matrix_layout(rows_a, cols_a, 1))
-        matrix_a_created = True
+        window.extend_layout(window['-MATRIZ_A-'], criar_layout_matriz(linhaA, colunasA, 1))
+        matriz_a_cria = True
 
-    if window == janela7 and event == "Criar Matriz B":
-        rows_b, cols_b = int(values['-ROWS_B-']), int(values['-COLS_B-'])
+    if window == janela7 and evento == "Criar Matriz B":
+        linhaB, colunasB = int(valores['-linhaB-']), int(valores['-colunasB-'])
         window['-MATRIZ_B-'].update(visible=True)
-        window.extend_layout(window['-MATRIZ_B-'], create_matrix_layout(rows_b, cols_b, 2))
-        matrix_b_created = True
+        window.extend_layout(window['-MATRIZ_B-'], criar_layout_matriz(linhaB, colunasB, 2))
+        matriz_b_cria = True
 
-    if window == janela7 and event == "Somar Matrizes" and matrix_a_created and matrix_b_created:
-        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
-        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
-        if matrix_a is not None and matrix_b is not None:
-            if matrix_a.shape == matrix_b.shape:
-                result = matrix_a + matrix_b
+    if window == janela7 and evento == "Somar Matrizes" and matriz_a_cria and matriz_b_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_a is not None and matriz_b is not None:
+            if matriz_a.shape == matriz_b.shape:
+                result = matriz_a + matriz_b
                 window['-RESULTADO-'].update(result)
             else:
                 sg.popup_error("As matrizes devem ter o mesmo tamanho para serem somadas.")
 
-    if window == janela7 and event == "Multiplicar Matrizes" and matrix_a_created and matrix_b_created:
-        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
-        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
-        if matrix_a is not None and matrix_b is not None:
-            if cols_a == rows_b:
-                result = np.dot(matrix_a, matrix_b)
+    if window == janela7 and evento == "Multiplicar Matrizes" and matriz_a_cria and matriz_b_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_a is not None and matriz_b is not None:
+            if colunasA == linhaB:
+                result = np.dot(matriz_a, matriz_b)
                 window['-RESULTADO-'].update(result)
             else:
                 sg.popup_error("O número de colunas da Matriz A deve ser igual ao número de linhas da Matriz B.")
 
-    if window == janela7 and event == "Determinante Matriz A" and matrix_a_created:
-        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
-        if matrix_a is not None:
-            if rows_a == cols_a:
-                det_a = np.linalg.det(matrix_a)
+    if window == janela7 and evento == "Determinante Matriz A" and matriz_a_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        if matriz_a is not None:
+            if linhaA == colunasA:
+                det_a = np.linalg.det(matriz_a)
                 window['-RESULTADO-'].update(f'Determinante da Matriz A: {det_a}')
             else:
                 sg.popup_error("A Matriz A deve ser quadrada para calcular o determinante.")
 
-    if window == janela7 and event == "Determinante Matriz B" and matrix_b_created:
-        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
-        if matrix_b is not None:
-            if rows_b == cols_b:
-                det_b = np.linalg.det(matrix_b)
+    if window == janela7 and evento == "Determinante Matriz B" and matriz_b_cria:
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_b is not None:
+            if linhaB == colunasB:
+                det_b = np.linalg.det(matriz_b)
                 window['-RESULTADO-'].update(f'Determinante da Matriz B: {det_b}')
             else:
                 sg.popup_error("A Matriz B deve ser quadrada para calcular o determinante.")
 
-    if window == janela7 and event == "Transposta Matriz A" and matrix_a_created:
-        matrix_a = get_matrix_values(window, rows_a, cols_a, 1)
-        if matrix_a is not None:
-            trans_a = np.transpose(matrix_a)
+    if window == janela7 and evento == "Transposta Matriz A" and matriz_a_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        if matriz_a is not None:
+            trans_a = np.transpose(matriz_a)
             window['-RESULTADO-'].update(f'Transposta da Matriz A:\n{trans_a}')
 
-    if window == janela7 and event == "Transposta Matriz B" and matrix_b_created:
-        matrix_b = get_matrix_values(window, rows_b, cols_b, 2)
-        if matrix_b is not None:
-            trans_b = np.transpose(matrix_b)
+    if window == janela7 and evento == "Transposta Matriz B" and matriz_b_cria:
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_b is not None:
+            trans_b = np.transpose(matriz_b)
             window['-RESULTADO-'].update(f'Transposta da Matriz B:\n{trans_b}')
 
 window.close()
