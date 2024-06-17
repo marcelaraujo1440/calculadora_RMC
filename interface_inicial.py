@@ -1,9 +1,30 @@
 import PySimpleGUI as sg
 import numpy as np
-from funcao2grau import *
 
 # Configurações de tema e fonte 
 sg.theme('DarkTeal2')
+
+# Nome do arquivo CSV para armazenar o histórico
+historico_CSV = 'historico.csv'
+
+# Função para criar o arquivo CSV se não existir
+def criar_arquivo_csv():
+    if not os.path.exists(historico_CSV):
+        df = pd.DataFrame(columns=['Usuario', 'Operacao', 'Resultado'])
+        df.to_csv(historico_CSV, index=False)
+
+# Função para adicionar uma entrada no histórico
+def adicionar_ao_historico(usuario, operacao, resultado):
+    df = pd.read_csv(historico_CSV)
+    df = df.append({'Usuario': usuario, 'Operacao': operacao, 'Resultado': resultado}, ignore_index=True)
+    df.to_csv(historico_CSV, index=False)
+
+# Função para ler o histórico de um usuário específico
+def ler_historico(usuario):
+    df = pd.read_csv(historico_CSV)
+    historico_usuario = df[df['Usuario'] == usuario]
+    return historico_usuario
+
 
 def criar_layout_matriz(linhas, colunas, matrtiz_num):
     layout = []
