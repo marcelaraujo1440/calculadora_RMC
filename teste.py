@@ -20,7 +20,7 @@ def atualizar_contagem(botao):
         if botao in df['Botao'].values:
             df.loc[df['Botao'] == botao, 'Contagem'] += 1
         else:
-            df = df.append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
+            df = df._append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
         df.to_csv('contagem_cliques.csv', index=False)
 
 def gerar_relatorio():
@@ -305,7 +305,7 @@ while True:
     if evento == 'Matrizes' and window == janela4:
         atualizar_contagem('Matrizes')
         janela4.hide()
-        janela8 = janela_matriz()
+        janela7 = janela_matriz()
 
     if evento == 'Função' and window == janela4:
         atualizar_contagem('Função')
