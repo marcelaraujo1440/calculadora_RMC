@@ -127,6 +127,8 @@ def janela_calculadorabasica():
 
     return sg.Window('Calculadora Básica', layout, finalize=True)
 
+
+
 def janela_func2():
     layout = [
         [sg.Text("Função do 2º grau", font=("Bookman Old Style", 20), justification='center', expand_x=True)],
@@ -221,7 +223,9 @@ janela11= None
 
 matriz_a_cria, matriz_b_cria = False, False
 linhaA, colunasA, linhaB, colunasB = 0, 0, 0, 0
-
+num = [str(i) for i in range(10)]
+history = ''
+operator = ["-DIV-","-MULTI-","-MAIS-","-MENOS-"]
 while True:
     window, evento, valores = sg.read_all_windows()
 
@@ -455,4 +459,42 @@ while True:
     if window == janela11 and evento == 'Voltar':
         janela11.close()
         janela10.un_hide()
+    
+    elif evento in num:
+        if len(history) < 12:
+            history += evento
+            window["-VALOR-"].update(int(history))
+    elif evento in operator:
+        op = evento
+        num_1 = float(history)
+        history = ''
+    
+    elif evento == "-RESULTADO-":
+        num_2 = int(history)
+        if op == "-MAIS-":
+            result = num_1 + num_2
+        elif op == "-MENOS-":
+            result = num_1 - num_2
+        elif op == "-MULTI-":
+            result = num_1 * num_2
+        elif op == "-DIV-":
+            result = num_1 / num_2
+        window["-VALOR-"].update(float(result))
+    
+    elif evento == "-LIMPAR-":
+        if len(history)>0:
+            history = history[:-1]
+            window["-VALOR-"].update(history)
+    
+    elif evento == "-LIMPARTD-":
+        history = ''
+        num_1 = 0
+        num_2 = 0
+        op = ''
+        window["-VALOR-"].update(history)
+    elif evento == "-OPOSTO-":
+        history = str(int(history) * -1)
+        window["-VALOR-"].update(history)
+
+       
 window.close()
