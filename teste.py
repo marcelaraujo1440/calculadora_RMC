@@ -17,10 +17,10 @@ def atualizar_contagem(botao):
     botoes_validos = ['Conjuntos', 'Função', 'Operações Básicas', 'Matrizes']
     if botao in botoes_validos:
         df = pd.read_csv('contagem_cliques.csv')
-        if botao in df['Botao'].valores:
+        if botao in df['Botao'].values:
             df.loc[df['Botao'] == botao, 'Contagem'] += 1
         else:
-            df = df._append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
+            df = df.append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
         df.to_csv('contagem_cliques.csv', index=False)
 
 def gerar_relatorio():
