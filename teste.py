@@ -17,7 +17,7 @@ def atualizar_contagem(botao):
     botoes_validos = ['Conjuntos', 'Função', 'Operações Básicas', 'Matrizes']
     if botao in botoes_validos:
         df = pd.read_csv('contagem_cliques.csv')
-        if botao in df['Botao'].valores:
+        if botao in df['Botao'].values:
             df.loc[df['Botao'] == botao, 'Contagem'] += 1
         else:
             df = df._append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
@@ -209,9 +209,9 @@ def janela_resultado(resultado):
 # Variáveis de controle de janelas
 janela1= criar_janela_inicial()
 janela2 =None #entrar ou voltar
-janela3 =None #ta sem nada
-janela4 =None #entrar
-janela5 =None #menu de operaçoes
+janela3 =None #cadastro
+janela4 =None #menu de operaçoes
+janela5 =None #
 janela6 =None #operações básicas
 janela7 = None #janela matriz
 janela8 = None #janela funcao 2 grau
@@ -254,6 +254,35 @@ while True:
         elif window == janela_matriz_valores:
             janela_matriz.un_hide()
             window.close()
+            
+    if window == janela2 and evento == 'Voltar':
+        janela2.hide()
+        janela1.un_hide()
+
+    if window == janela3 and evento == 'Voltar':
+        janela3.hide()
+        janela2.un_hide()
+    
+    if window == janela4 and evento == 'Voltar':
+        janela4.hide()
+        janela2.un_hide()
+
+    if window == janela8 and evento == 'Voltar':
+        janela8.hide()
+        janela4.un_hide()
+
+  
+    if window == janela6 and evento == "Voltar":
+        janela6.hide()
+        janela4.un_hide()
+    
+    if window == janela7 and evento == "Voltar":
+        janela7.hide()
+        janela4.un_hide()
+
+    if window == janela9 and evento == 'Voltar':
+        janela9.hide()
+        janela4.un_hide()
 
     if evento == 'Entrar' and window == janela2:
         janela3 = janela_entrar()
@@ -285,8 +314,9 @@ while True:
 
     if evento == 'Operações Básicas' and window == janela4:
         atualizar_contagem('Operações Básicas')
-        janela_calculadorabasica = janela_calculadorabasica()
         janela4.hide()
+        janela6= janela_calculadorabasica()
+        
 
 
     if evento == 'Histórico' and window == janela4:
