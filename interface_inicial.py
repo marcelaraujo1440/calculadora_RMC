@@ -1,5 +1,8 @@
 import PySimpleGUI as sg
 import numpy as np
+import os
+import math
+import pandas as pd
 
 # Configurações de tema e fonte 
 sg.theme('DarkTeal2')
