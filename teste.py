@@ -2,8 +2,9 @@ import PySimpleGUI as sg
 import numpy as np
 import os
 import pandas as pd
+import math
 
-# Configurações de tema e fonte 
+
 sg.theme('DarkTeal2')
 
 # Funções para manipulação do arquivo CSV
@@ -16,7 +17,7 @@ def atualizar_contagem(botao):
     botoes_validos = ['Conjuntos', 'Função', 'Operações Básicas', 'Matrizes']
     if botao in botoes_validos:
         df = pd.read_csv('contagem_cliques.csv')
-        if botao in df['Botao'].values:
+        if botao in df['Botao'].valores:
             df.loc[df['Botao'] == botao, 'Contagem'] += 1
         else:
             df = df._append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
@@ -25,35 +26,35 @@ def atualizar_contagem(botao):
 def gerar_relatorio():
     df = pd.read_csv('contagem_cliques.csv')
     relatorio = ""
-    for index, row in df.iterrows():
-        relatorio += f"{row['Botao']}: {row['Contagem']} vezes\n"
+    for index, linha in df.iterrows():
+        relatorio += f"{linha['Botao']}: {linha['Contagem']} vezes\n"
     return relatorio
 
 # Inicializar arquivo de contagem
 inicializar_arquivo_contagem()
 
-def criar_layout_matriz(linhas, colunas, matriz_num):
+def criar_layout_matriz(linhas, colunas, matrtiz_num):
     layout = []
     for i in range(linhas):
         linha = []
         for j in range(colunas):
-            linha.append(sg.Input(size=(5, 1), key=f'M{matriz_num}_r{i}c{j}'))
+            linha.append(sg.Input(size=(5, 1), key=f'M{matrtiz_num}_r{i}c{j}'))
         layout.append(linha)
     return layout
 
-def pegar_valores_matriz(window, linhas, colunas, matriz_num):
-    matriz = []
+def pegar_valores_matriz(window, linhas, colunas, matrtiz_num):
+    matrtiz = []
     for i in range(linhas):
         linha = []
         for j in range(colunas):
-            valor = window[f'M{matriz_num}_r{i}c{j}'].get()
+            valor = window[f'M{matrtiz_num}_r{i}c{j}'].get()
             if valor.replace('.', '', 1).isdigit() or (valor.startswith('-') and valor[1:].replace('.', '', 1).isdigit()):
                 linha.append(float(valor))
             else:
-                sg.popup_error(f"Valor inválido na matriz {matriz_num}, posição ({i},{j}).")
+                sg.popup_error(f"Valor inválido na matriz {matrtiz_num}, posição ({i},{j}).")
                 return None
-        matriz.append(linha)
-    return np.array(matriz)
+        matrtiz.append(linha)
+    return np.array(matrtiz)
 
 def criar_janela_inicial():
     layout = [
@@ -126,17 +127,36 @@ def janela_calculadorabasica():
 
     return sg.Window('Calculadora Básica', layout, finalize=True)
 
+def janela_func2():
+    layout = [
+        [sg.Text("Função do 2º grau", font=("Bookman Old Style", 20), justification='center', expand_x=True)],
+        [sg.Text("Digite o valor de A", font=("Bookman Old Style", 10)), sg.InputText(key='-valA-', size=(7, 2))],
+        [sg.Text("Digite o valor de B", font=("Bookman Old Style", 10)), sg.InputText(key='-valB-', size=(7, 2))],
+        [sg.Text("Digite o valor de C", font=("Bookman Old Style", 10)), sg.InputText(key='-valC-', size=(7, 2))],
+        [sg.Button("Calcular", size=(20, 2), pad=(20, 20))],
+        [sg.Text("Resultado:", font=("Courier", 15))],
+        [sg.Multiline(key='-RESULTADO-', size=(25, 5), disabled=True)],
+        [sg.Button("Voltar", size=(20, 2), pad=(20, 20))]
+    ]
+    return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
+
 def janela_matriz():
     layout = [
-        [sg.Text("Calculadora de Matrizes", font=("Bookman Old Style", 25), justification='center')],
+        [sg.Text("Calculadora de Matrizes",font=("Bookman Old Style", 20) , justification='center')],
         [sg.Text("Número de linhas e colunas da Matriz A:", font=("Bookman Old Style", 15) )],
         [sg.InputText(key='-linhaA-', size=(5, 1)), sg.InputText(key='-colunasA-', size=(5, 1))],
-        [sg.Button("Criar Matriz A", size=(20, 1), font=("Bookman Old Style", 10))],
-        [sg.Text("Número de linhas e colunas da Matriz B:", font=("Bookman Old Style", 15) )],
+        [sg.Button("Criar Matriz A")],
+        [sg.Text("Número de linhas e colunas da Matriz B:", font=("Courier", 15))],
         [sg.InputText(key='-linhaB-', size=(5, 1)), sg.InputText(key='-colunasB-', size=(5, 1))],
-        [sg.Button("Criar Matriz B", size=(20, 1), font=("Bookman Old Style", 10))],
-        [sg.Text('', key='-erro-', text_color='red')],
-        [sg.Button("Multiplicar", size=(20, 1), font=("Bookman Old Style", 10)), sg.Button("Voltar", size=(20, 1), font=("Bookman Old Style", 10))]
+        [sg.Button("Criar Matriz B")],
+        [sg.Frame("Matriz A", [[sg.Column([[]], key='-MATRIZ_A-')]]), 
+         sg.Frame("Matriz B", [[sg.Column([[]], key='-MATRIZ_B-')]])],
+        [sg.Button("Somar Matrizes"), sg.Button("Multiplicar Matrizes")],
+        [sg.Button("Determinante Matriz A"), sg.Button("Determinante Matriz B")],
+        [sg.Button("Transposta Matriz A"), sg.Button("Transposta Matriz B")],
+        [sg.Text("Resultado:", font=("Courier", 15))],
+        [sg.Multiline(key='-RESULTADO-', size=(40, 10), disabled=True)],
+        [sg.Button("Voltar")]
     ]
     return sg.Window('Calculadora de Matrizes', layout, finalize=True)
 
@@ -151,27 +171,71 @@ def janela_matriz_valores(linhasA, colunasA, linhasB, colunasB):
     return sg.Window('Valores das Matrizes', layout, finalize=True)
 
 # Função de multiplicação de matrizes
-def multiplicar_matrizes(A, B):
-    return np.dot(A, B)
+
+
+def janela_inicial():
+    layout = [
+        [sg.Text('Escolha o tamanho dos conjuntos',font=("Bookman Old Style", 20))],
+        [sg.Text('Tamanho do Conjunto A:', size=(20, 1),font=("Bookman Old Style", 20),pad=(20,20)), sg.Input(key='tamanho_a', size=(5, 1))],
+        [sg.Text('Tamanho do Conjunto B:', size=(20, 1),font=("Bookman Old Style", 20),pad=(20,20)), sg.Input(key='tamanho_b', size=(5, 1))],
+        [sg.Button("Voltar",size=(20,2),pad=(20,20)),sg.Button('Continuar',size=(20,2),pad=(20,20),)]
+    ]
+    return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
+
+# Função para criar a janela dos conjuntos
+def janela_conjuntos(tamanho_a, tamanho_b):
+    layout_a = [[sg.Text(f'Elemento {i + 1}:', size=(10, 1)), sg.Input(key=f'elem_a_{i}', size=(7, 1))] for i in range(tamanho_a)]
+    layout_b = [[sg.Text(f'Elemento {i + 1}:', size=(10, 1)), sg.Input(key=f'elem_b_{i}', size=(7, 1))] for i in range(tamanho_b)]
+    
+    layout = [
+        [sg.Text('Elementos do Conjunto A',font=("Bookman Old Style", 20))],
+        *layout_a,
+        [sg.Text('Elementos do Conjunto B',font=("Bookman Old Style", 20))],
+        *layout_b,
+        [sg.Button('Calcular União',size=(10,2),pad=(10,10)), sg.Button('Calcular Interseção',size=(10,2)), sg.Button('Calcular Diferença',size=(10,2)), sg.Button('Voltar',size=(10,2))]
+    ]
+    return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
+
+
+# Função para criar a janela de resultado
+def janela_resultado(resultado):
+    layout = [
+        [sg.Text('Resultado:', size=(40, 1),font=("Bookman Old Style", 20))],
+        [sg.Multiline(resultado, size=(20, 10), disabled=True)],
+        [sg.Button('Voltar',size=(20,2))]
+    ]
+    return sg.Window('Calculadora Sinistra', layout, size=(500, 450), element_justification='center', finalize=True)
 
 # Variáveis de controle de janelas
-janela1, janela2, janela3, janela4, janela_matriz, janela_matriz_valores, janela_calculadorabasica = criar_janela_inicial(), None, None, None, None, None, None
+janela1= criar_janela_inicial()
+janela2 =None #entrar ou voltar
+janela3 =None #ta sem nada
+janela4 =None #entrar
+janela5 =None #menu de operaçoes
+janela6 =None #operações básicas
+janela7 = None #janela matriz
+janela8 = None #janela funcao 2 grau
+janela9 = None#janela conjuntos
+janela10= None
+janela11= None
 
-# Loop principal do PySimpleGUI
+matriz_a_cria, matriz_b_cria = False, False
+linhaA, colunasA, linhaB, colunasB = 0, 0, 0, 0
+
 while True:
-    window, event, values = sg.read_all_windows()
+    window, evento, valores = sg.read_all_windows()
 
-    if event == sg.WIN_CLOSED:
+    if evento == sg.WIN_CLOSED:
         window.close()
         if window == janela1:
             break
         continue
 
-    if event == 'INICIAR' and window == janela1:
+    if evento == 'INICIAR' and window == janela1:
         janela2 = criar_janela_secundaria()
         janela1.hide()
 
-    if event == 'Voltar':
+    if evento == 'Voltar':
         if window == janela2:
             janela1.un_hide()
             window.close()
@@ -191,83 +255,174 @@ while True:
             janela_matriz.un_hide()
             window.close()
 
-    if event == 'Entrar' and window == janela2:
+    if evento == 'Entrar' and window == janela2:
         janela3 = janela_entrar()
         janela2.hide()
 
-    if event == 'Enviar' and window == janela3:
-        if values['-USUARIO-']:
-            sg.popup(f"Bem-vindo(a), {values['-USUARIO-']}!")
+    if evento == 'Enviar' and window == janela3:
+        if valores['-USUARIO-']:
+            sg.popup(f"Bem-vindo(a), {valores['-USUARIO-']}!")
             janela4 = janela_op()
             janela3.close()
         else:
             sg.popup_error("Por favor, insira um nome de usuário válido.")
 
-    if event == 'Conjuntos' and window == janela4:
+    if window == janela4 and evento == 'Conjuntos':
         atualizar_contagem('Conjuntos')
-        sg.popup("Função Conjuntos ainda não implementada.")
-
-    if event == 'Matrizes' and window == janela4:
-        atualizar_contagem('Matrizes')
-        janela_matriz = janela_matriz()
         janela4.hide()
+        janela9 = janela_inicial()
+        
 
-    if event == 'Função' and window == janela4:
+    if evento == 'Matrizes' and window == janela4:
+        atualizar_contagem('Matrizes')
+        janela4.hide()
+        janela8 = janela_matriz()
+
+    if evento == 'Função' and window == janela4:
         atualizar_contagem('Função')
-        sg.popup("Função Função ainda não implementada.")
+        janela4.hide()
+        janela8 = janela_func2()
 
-    if event == 'Operações Básicas' and window == janela4:
+    if evento == 'Operações Básicas' and window == janela4:
         atualizar_contagem('Operações Básicas')
         janela_calculadorabasica = janela_calculadorabasica()
         janela4.hide()
 
-    if event == 'Histórico' and window == janela4:
+
+    if evento == 'Histórico' and window == janela4:
         relatorio = gerar_relatorio()
         sg.popup_scrolled(relatorio, title="Histórico de Cliques")
-
-    if event == 'Criar Matriz A' and window == janela_matriz:
-        try:
-            linhasA = int(values['-linhaA-'])
-            colunasA = int(values['-colunasA-'])
-            if linhasA > 0 and colunasA > 0:
-                sg.popup(f"Matriz A de {linhasA}x{colunasA} criada.")
+    
+    if evento == "Calcular":
+            valA = valores['-valA-']
+            valB = valores['-valB-']
+            valC = valores['-valC-']
+            
+            if not valA or not valB or not valC:
+                resultado = "Por favor, preencha todos os campos."
+            elif not valA.replace('-', '').isdigit() or not valB.replace('-', '').isdigit() or not valC.replace('-', '').isdigit():
+                resultado = "Por favor, insira valores numéricos válidos para A, B e C."
             else:
-                window['-erro-'].update("Número de linhas e colunas deve ser maior que 0.")
-        except ValueError:
-            window['-erro-'].update("Por favor, insira números válidos para linhas e colunas.")
+                a = int(valA)
+                b = int(valB)
+                c = int(valC)
+                if a == 0:
+                    resultado = "O valor de 'a' não pode ser zero."
+                else:
+                    delta = b**2 - 4*a*c
+                    if delta < 0:
+                        parte_real = -b / (2*a)
+                        parte_imaginaria = math.sqrt(-delta) / (2*a)
+                        resultado = (f"As raízes são complexas: {parte_real:.2f} + {parte_imaginaria:.2f}i "
+                                    f"e {parte_real:.2f} - {parte_imaginaria:.2f}i\n")
+                    elif delta == 0:
+                        raiz = -b / (2*a)
+                        resultado = f"A raiz é {raiz:.2f}"
+                    else:
+                        raiz1 = (-b + math.sqrt(delta)) / (2*a)
+                        raiz2 = (-b - math.sqrt(delta)) / (2*a)
+                        resultado = f"As raízes são {raiz1:.2f} e {raiz2:.2f}"
+            
+            window['-RESULTADO-'].update(resultado)
 
-    if event == 'Criar Matriz B' and window == janela_matriz:
-        try:
-            linhasB = int(values['-linhaB-'])
-            colunasB = int(values['-colunasB-'])
-            if linhasB > 0 and colunasB > 0:
-                sg.popup(f"Matriz B de {linhasB}x{colunasB} criada.")
+    if window == janela7 and evento == "Criar Matriz A":
+        linhaA, colunasA = int(valores['-linhaA-']), int(valores['-colunasA-'])
+        window['-MATRIZ_A-'].update(visible=True)
+        window.extend_layout(window['-MATRIZ_A-'], criar_layout_matriz(linhaA, colunasA, 1))
+        matriz_a_cria = True
+
+    if window == janela7 and evento == "Criar Matriz B":
+        linhaB, colunasB = int(valores['-linhaB-']), int(valores['-colunasB-'])
+        window['-MATRIZ_B-'].update(visible=True)
+        window.extend_layout(window['-MATRIZ_B-'], criar_layout_matriz(linhaB, colunasB, 2))
+        matriz_b_cria = True
+
+    if window == janela7 and evento == "Somar Matrizes" and matriz_a_cria and matriz_b_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_a is not None and matriz_b is not None:
+            if matriz_a.shape == matriz_b.shape:
+                result = matriz_a + matriz_b
+                window['-RESULTADO-'].update(result)
             else:
-                window['-erro-'].update("Número de linhas e colunas deve ser maior que 0.")
-        except ValueError:
-            window['-erro-'].update("Por favor, insira números válidos para linhas e colunas.")
+                sg.popup_error("As matrizes devem ter o mesmo tamanho para serem somadas.")
 
-    if event == 'Multiplicar' and window == janela_matriz:
-        try:
-            linhasA = int(values['-linhaA-'])
-            colunasA = int(values['-colunasA-'])
-            linhasB = int(values['-linhaB-'])
-            colunasB = int(values['-colunasB-'])
-            if colunasA == linhasB:
-                janela_matriz_valores = janela_matriz_valores(linhasA, colunasA, linhasB, colunasB)
-                janela_matriz.hide()
+    if window == janela7 and evento == "Multiplicar Matrizes" and matriz_a_cria and matriz_b_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_a is not None and matriz_b is not None:
+            if colunasA == linhaB:
+                result = np.dot(matriz_a, matriz_b)
+                window['-RESULTADO-'].update(result)
             else:
-                window['-erro-'].update("Número de colunas de A deve ser igual ao número de linhas de B.")
-        except ValueError:
-            window['-erro-'].update("Por favor, insira números válidos para linhas e colunas.")
+                sg.popup_error("O número de colunas da Matriz A deve ser igual ao número de linhas da Matriz B.")
 
-    if event == 'Calcular' and window == janela_matriz_valores:
-        linhasA = int(values['-linhaA-'])
-        colunasA = int(values['-colunasA-'])
-        linhasB = int(values['-linhaB-'])
-        colunasB = int(values['-colunasB-'])
-        A = pegar_valores_matriz(window, linhasA, colunasA, 1)
-        B = pegar_valores_matriz(window, linhasB, colunasB, 2)
-        if A is not None and B is not None:
-            resultado = multiplicar_matrizes(A, B)
-            sg.popup(f"Resultado da multiplicação:\n{resultado}")
+    if window == janela7 and evento == "Determinante Matriz A" and matriz_a_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        if matriz_a is not None:
+            if linhaA == colunasA:
+                det_a = np.linalg.det(matriz_a)
+                window['-RESULTADO-'].update(f'Determinante da Matriz A: {det_a}')
+            else:
+                sg.popup_error("A Matriz A deve ser quadrada para calcular o determinante.")
+
+    if window == janela7 and evento == "Determinante Matriz B" and matriz_b_cria:
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_b is not None:
+            if linhaB == colunasB:
+                det_b = np.linalg.det(matriz_b)
+                window['-RESULTADO-'].update(f'Determinante da Matriz B: {det_b}')
+            else:
+                sg.popup_error("A Matriz B deve ser quadrada para calcular o determinante.")
+
+    if window == janela7 and evento == "Transposta Matriz A" and matriz_a_cria:
+        matriz_a = pegar_valores_matriz(window, linhaA, colunasA, 1)
+        if matriz_a is not None:
+            trans_a = np.transpose(matriz_a)
+            window['-RESULTADO-'].update(f'Transposta da Matriz A:\n{trans_a}')
+
+    if window == janela7 and evento == "Transposta Matriz B" and matriz_b_cria:
+        matriz_b = pegar_valores_matriz(window, linhaB, colunasB, 2)
+        if matriz_b is not None:
+            trans_b = np.transpose(matriz_b)
+            window['-RESULTADO-'].update(f'Transposta da Matriz B:\n{trans_b}')
+    
+    if window == janela9 and evento == 'Continuar':
+        tamanho_a = valores['tamanho_a']
+        tamanho_b = valores['tamanho_b']
+        if tamanho_a.isdigit() and tamanho_b.isdigit():
+            tamanho_a = int(tamanho_a)
+            tamanho_b = int(tamanho_b)
+            janela9.hide()
+            janela10 = janela_conjuntos(tamanho_a, tamanho_b)
+        else:
+            sg.popup('Por favor, insira números válidos para os tamanhos dos conjuntos')
+    
+    # Se clicar no botão 'Voltar' da janela dos conjuntos
+    if window == janela10 and evento == 'Voltar':
+        janela10.close()
+        janela9.un_hide()
+    
+    # Se clicar nos botões de calcular
+    if window == janela10 and evento in ['Calcular União', 'Calcular Interseção', 'Calcular Diferença']:
+        conjunto_a = {valores[f'elem_a_{i}'] for i in range(tamanho_a)}
+        conjunto_b = {valores[f'elem_b_{i}'] for i in range(tamanho_b)}
+        
+        if evento == 'Calcular União':
+            resultado = conjunto_a | conjunto_b
+            resultado_texto = f'União: {resultado}'
+        elif evento == 'Calcular Interseção':
+            resultado = conjunto_a & conjunto_b
+            resultado_texto = f'Interseção: {resultado}'
+        elif evento == 'Calcular Diferença':
+            resultado = conjunto_a - conjunto_b
+            resultado_texto = f'Diferença: {resultado}'
+        
+        janela10.hide()
+        janela11 = janela_resultado(resultado_texto)
+    
+    # Se clicar no botão 'Voltar' da janela de resultado
+    if window == janela11 and evento == 'Voltar':
+        janela11.close()
+        janela10.un_hide()
+window.close()
