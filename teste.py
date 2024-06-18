@@ -20,7 +20,7 @@ def atualizar_contagem(botao):
         if botao in df['Botao'].values:
             df.loc[df['Botao'] == botao, 'Contagem'] += 1
         else:
-            df = df._append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
+            df = df.append({'Botao': botao, 'Contagem': 1}, ignore_index=True)
         df.to_csv('contagem_cliques.csv', index=False)
 
 def gerar_relatorio():
